@@ -1,9 +1,27 @@
 <mxfile host="Electron" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/28.2.5 Chrome/138.0.7204.251 Electron/37.6.1 Safari/537.36" version="28.2.5">
   <diagram name="Página-1" id="YFaynktEbu1BXZREu799">
-    <mxGraphModel dx="1426" dy="843" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0" adaptiveColors="auto">
+    <mxGraphModel dx="983" dy="581" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0" adaptiveColors="auto">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
+        <mxCell id="R-CO4RurLNskeSDwoYwb-1" value="Cliente" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="110" y="270" width="60" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="R-CO4RurLNskeSDwoYwb-2" value="Gerente del taller" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="640" y="270" width="60" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="R-CO4RurLNskeSDwoYwb-4" value="Crear/modificar/ver cliente" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="340" y="150" width="130" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="R-CO4RurLNskeSDwoYwb-5" value="Crear/modificar/ver vehiculos" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="340" y="210" width="130" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="R-CO4RurLNskeSDwoYwb-6" value="Crear/modificar/ver incidencias" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="340" y="270" width="130" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="R-CO4RurLNskeSDwoYwb-7" value="Crear/modificar/ver mecanicos" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="340" y="330" width="135" height="40" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
