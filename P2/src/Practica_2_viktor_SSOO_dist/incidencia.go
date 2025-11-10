@@ -5,13 +5,11 @@ import (
 	"time"
 )
 
-// IncidenciaManager gestiona las operaciones sobre incidencias
 type IncidenciaManager struct {
 	incidencias []Incidencia
 	nextID      int
 }
 
-// NewIncidenciaManager crea un nuevo gestor de incidencias
 func NewIncidenciaManager() *IncidenciaManager {
 	return &IncidenciaManager{
 		incidencias: make([]Incidencia, 0),
@@ -19,7 +17,6 @@ func NewIncidenciaManager() *IncidenciaManager {
 	}
 }
 
-// CrearIncidencia crea una nueva incidencia
 func (im *IncidenciaManager) CrearIncidencia(tipo TipoIncidencia, prioridad Prioridad, descripcion string) Incidencia {
 	incidencia := Incidencia{
 		ID:           im.nextID,
@@ -34,7 +31,6 @@ func (im *IncidenciaManager) CrearIncidencia(tipo TipoIncidencia, prioridad Prio
 	return incidencia
 }
 
-// ObtenerIncidencia obtiene una incidencia por su ID
 func (im *IncidenciaManager) ObtenerIncidencia(id int) (Incidencia, bool) {
 	for i := 0; i < len(im.incidencias); i++ {
 		if im.incidencias[i].ID == id {
@@ -44,7 +40,6 @@ func (im *IncidenciaManager) ObtenerIncidencia(id int) (Incidencia, bool) {
 	return Incidencia{}, false
 }
 
-// ActualizarIncidencia actualiza los datos de una incidencia
 func (im *IncidenciaManager) ActualizarIncidencia(id int, tipo TipoIncidencia, prioridad Prioridad, descripcion string) error {
 	for i := 0; i < len(im.incidencias); i++ {
 		if im.incidencias[i].ID == id {
@@ -63,7 +58,6 @@ func (im *IncidenciaManager) ActualizarIncidencia(id int, tipo TipoIncidencia, p
 	return fmt.Errorf("incidencia con ID %d no encontrada", id)
 }
 
-// EliminarIncidencia elimina una incidencia
 func (im *IncidenciaManager) EliminarIncidencia(id int) error {
 	for i := 0; i < len(im.incidencias); i++ {
 		if im.incidencias[i].ID == id {
@@ -74,12 +68,10 @@ func (im *IncidenciaManager) EliminarIncidencia(id int) error {
 	return fmt.Errorf("incidencia con ID %d no encontrada", id)
 }
 
-// ListarIncidencias lista todas las incidencias
 func (im *IncidenciaManager) ListarIncidencias() []Incidencia {
 	return im.incidencias
 }
 
-// CambiarEstado cambia el estado de una incidencia
 func (im *IncidenciaManager) CambiarEstado(id int, nuevoEstado EstadoIncidencia) error {
 	for i := 0; i < len(im.incidencias); i++ {
 		if im.incidencias[i].ID == id {
@@ -90,7 +82,6 @@ func (im *IncidenciaManager) CambiarEstado(id int, nuevoEstado EstadoIncidencia)
 	return fmt.Errorf("incidencia con ID %d no encontrada", id)
 }
 
-// AsignarMecanico asigna un mecánico a una incidencia
 func (im *IncidenciaManager) AsignarMecanico(incidenciaID, mecanicoID int) error {
 	for i := 0; i < len(im.incidencias); i++ {
 		if im.incidencias[i].ID == incidenciaID {
@@ -107,7 +98,6 @@ func (im *IncidenciaManager) AsignarMecanico(incidenciaID, mecanicoID int) error
 	return fmt.Errorf("incidencia con ID %d no encontrada", incidenciaID)
 }
 
-// DesasignarMecanico desasigna un mecánico de una incidencia
 func (im *IncidenciaManager) DesasignarMecanico(incidenciaID, mecanicoID int) error {
 	for i := 0; i < len(im.incidencias); i++ {
 		if im.incidencias[i].ID == incidenciaID {
@@ -130,7 +120,6 @@ func (im *IncidenciaManager) DesasignarMecanico(incidenciaID, mecanicoID int) er
 	return fmt.Errorf("incidencia con ID %d no encontrada", incidenciaID)
 }
 
-// ObtenerTiempoAtencion devuelve el tiempo de atención según el tipo de incidencia
 func ObtenerTiempoAtencion(tipo TipoIncidencia) time.Duration {
 	if tipo == Mecanica {
 		return 5 * time.Second

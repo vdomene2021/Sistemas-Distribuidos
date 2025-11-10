@@ -4,7 +4,6 @@ import (
 	"time"
 )
 
-// Cliente representa un cliente del taller
 type Cliente struct {
 	ID         int
 	Nombre     string
@@ -13,7 +12,6 @@ type Cliente struct {
 	VehiculoID int
 }
 
-// Vehiculo representa un vehículo en el taller
 type Vehiculo struct {
 	ID              int
 	Matricula       string
@@ -26,7 +24,6 @@ type Vehiculo struct {
 	TiempoAcumulado float64 // Tiempo total de atención en segundos
 }
 
-// TipoIncidencia representa los tipos de incidencia posibles
 type TipoIncidencia string
 
 const (
@@ -35,7 +32,6 @@ const (
 	Carroceria TipoIncidencia = "carroceria"
 )
 
-// Prioridad representa el nivel de prioridad
 type Prioridad string
 
 const (
@@ -44,7 +40,6 @@ const (
 	Alta  Prioridad = "alta"
 )
 
-// EstadoIncidencia representa el estado de una incidencia
 type EstadoIncidencia string
 
 const (
@@ -53,7 +48,6 @@ const (
 	Cerrada   EstadoIncidencia = "cerrada"
 )
 
-// Incidencia representa una reparación a realizar
 type Incidencia struct {
 	ID           int
 	MecanicosIDs []int
@@ -63,7 +57,6 @@ type Incidencia struct {
 	Estado       EstadoIncidencia
 }
 
-// Especialidad representa la especialidad de un mecánico
 type Especialidad string
 
 const (
@@ -72,7 +65,6 @@ const (
 	EspecialidadCarroceria Especialidad = "carroceria"
 )
 
-// Mecanico representa un mecánico del taller
 type Mecanico struct {
 	ID           int
 	Nombre       string
@@ -82,7 +74,6 @@ type Mecanico struct {
 	Ocupado      bool // Indica si está atendiendo un vehículo
 }
 
-// TrabajoPendiente representa un trabajo en la cola de espera
 type TrabajoPendiente struct {
 	Vehiculo     *Vehiculo
 	Incidencia   *Incidencia

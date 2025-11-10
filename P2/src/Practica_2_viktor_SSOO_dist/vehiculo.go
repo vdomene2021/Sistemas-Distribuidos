@@ -5,13 +5,11 @@ import (
 	"time"
 )
 
-// VehiculoManager gestiona las operaciones sobre vehículos
 type VehiculoManager struct {
 	vehiculos []Vehiculo
 	nextID    int
 }
 
-// NewVehiculoManager crea un nuevo gestor de vehículos
 func NewVehiculoManager() *VehiculoManager {
 	return &VehiculoManager{
 		vehiculos: make([]Vehiculo, 0),
@@ -19,7 +17,6 @@ func NewVehiculoManager() *VehiculoManager {
 	}
 }
 
-// CrearVehiculo crea un nuevo vehículo
 func (vm *VehiculoManager) CrearVehiculo(matricula, marca, modelo string, clienteID int) Vehiculo {
 	vehiculo := Vehiculo{
 		ID:              vm.nextID,
@@ -35,7 +32,6 @@ func (vm *VehiculoManager) CrearVehiculo(matricula, marca, modelo string, client
 	return vehiculo
 }
 
-// ObtenerVehiculo obtiene un vehículo por su ID
 func (vm *VehiculoManager) ObtenerVehiculo(id int) (Vehiculo, bool) {
 	for i := 0; i < len(vm.vehiculos); i++ {
 		if vm.vehiculos[i].ID == id {
@@ -45,7 +41,6 @@ func (vm *VehiculoManager) ObtenerVehiculo(id int) (Vehiculo, bool) {
 	return Vehiculo{}, false
 }
 
-// ActualizarVehiculo actualiza los datos de un vehículo
 func (vm *VehiculoManager) ActualizarVehiculo(id int, matricula, marca, modelo string) error {
 	for i := 0; i < len(vm.vehiculos); i++ {
 		if vm.vehiculos[i].ID == id {
@@ -64,7 +59,6 @@ func (vm *VehiculoManager) ActualizarVehiculo(id int, matricula, marca, modelo s
 	return fmt.Errorf("vehículo con ID %d no encontrado", id)
 }
 
-// EliminarVehiculo elimina un vehículo
 func (vm *VehiculoManager) EliminarVehiculo(id int) error {
 	for i := 0; i < len(vm.vehiculos); i++ {
 		if vm.vehiculos[i].ID == id {
@@ -75,12 +69,10 @@ func (vm *VehiculoManager) EliminarVehiculo(id int) error {
 	return fmt.Errorf("vehículo con ID %d no encontrado", id)
 }
 
-// ListarVehiculos lista todos los vehículos
 func (vm *VehiculoManager) ListarVehiculos() []Vehiculo {
 	return vm.vehiculos
 }
 
-// AsignarIncidencia asigna una incidencia a un vehículo
 func (vm *VehiculoManager) AsignarIncidencia(vehiculoID, incidenciaID int) error {
 	for i := 0; i < len(vm.vehiculos); i++ {
 		if vm.vehiculos[i].ID == vehiculoID {
@@ -91,7 +83,6 @@ func (vm *VehiculoManager) AsignarIncidencia(vehiculoID, incidenciaID int) error
 	return fmt.Errorf("vehículo con ID %d no encontrado", vehiculoID)
 }
 
-// ActualizarTiempoAcumulado actualiza el tiempo acumulado de atención de un vehículo
 func (vm *VehiculoManager) ActualizarTiempoAcumulado(vehiculoID int, tiempo float64) error {
 	for i := 0; i < len(vm.vehiculos); i++ {
 		if vm.vehiculos[i].ID == vehiculoID {
@@ -102,7 +93,6 @@ func (vm *VehiculoManager) ActualizarTiempoAcumulado(vehiculoID int, tiempo floa
 	return fmt.Errorf("vehículo con ID %d no encontrado", vehiculoID)
 }
 
-// ObtenerTiempoAcumulado obtiene el tiempo acumulado de un vehículo
 func (vm *VehiculoManager) ObtenerTiempoAcumulado(vehiculoID int) (float64, bool) {
 	for i := 0; i < len(vm.vehiculos); i++ {
 		if vm.vehiculos[i].ID == vehiculoID {
@@ -112,7 +102,6 @@ func (vm *VehiculoManager) ObtenerTiempoAcumulado(vehiculoID int) (float64, bool
 	return 0, false
 }
 
-// ListarVehiculosPorCliente lista todos los vehículos de un cliente
 func (vm *VehiculoManager) ListarVehiculosPorCliente(clienteID int) []Vehiculo {
 	lista := make([]Vehiculo, 0)
 	for i := 0; i < len(vm.vehiculos); i++ {

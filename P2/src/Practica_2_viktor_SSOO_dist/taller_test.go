@@ -1,5 +1,3 @@
-// En /P2/src/Practica_2_viktor_SSOO_dist/taller_test.go
-
 package main
 
 import (
@@ -12,7 +10,7 @@ import (
 func setupTest(t *testing.T, mechanicConfig map[Especialidad]int) (*Taller, *VehiculoManager, *IncidenciaManager) {
 	// Crear managers limpios
 	mm := NewMecanicoManager()
-	vm := NewVehiculoManager() // <-- ¡AQUÍ ESTABA EL ERROR, AHORA CORREGIDO!
+	vm := NewVehiculoManager()
 	im := NewIncidenciaManager()
 
 	// Crear mecánicos según la configuración
@@ -34,13 +32,13 @@ func setupTest(t *testing.T, mechanicConfig map[Especialidad]int) (*Taller, *Veh
 	return taller, vm, im
 }
 
-// runTestSimulation simula la llegada de N coches UNA SOLA VEZ
+// runTestSimulation simula la llegada de N coches a la vez
 func runTestSimulation(t *testing.T, numCars int, tipo TipoIncidencia, mechanicConfig map[Especialidad]int) {
 	taller, vm, im := setupTest(t, mechanicConfig)
 	var wg sync.WaitGroup
 	taller.wg = &wg
 
-	// Creamos vehículos e incidencias NUEVOS
+	// Creamos vehículos e incidencias nuevos
 	vehiculos := make([]Vehiculo, numCars)
 	incidencias := make([]Incidencia, numCars)
 	for i := 0; i < numCars; i++ {
@@ -57,13 +55,12 @@ func runTestSimulation(t *testing.T, numCars int, tipo TipoIncidencia, mechanicC
 		taller.AgregarTrabajo(vehiculos[i], incidencias[i])
 	}
 
-	// Esperar a que el WaitGroup (wg) nos diga que
-	// TODOS los trabajos se han completado (llegado a 0).
+	// Esperar a que el WaitGroup (wg) nos diga que todos los trabajos se han completado (llegado a 0)
 	wg.Wait()
 }
 
 // --- CASO 1: Test de Comparativa DUPLICANDO COCHES ---
-//
+
 // (Plantilla base: 1 mecánico de cada tipo)
 var configBase = map[Especialidad]int{
 	EspecialidadMecanica:   1,
@@ -80,9 +77,6 @@ func Test_DuplicarCoches_6(t *testing.T) {
 }
 
 // --- CASO 2: Test de Comparativa DUPLICANDO PLANTILLA ---
-//
-
-// La configuración de 3 mecánicos (1-1-1) ya la tenemos en 'configBase'
 
 // Nueva configuración con 6 mecánicos (2-2-2)
 var configCaso2_6Mecanicos = map[Especialidad]int{
@@ -91,7 +85,7 @@ var configCaso2_6Mecanicos = map[Especialidad]int{
 	EspecialidadCarroceria: 2, // 2 de carrocería
 }
 
-// Usamos 10 coches de Mecánica como carga de trabajo estándar para comparar
+// Usamos 7 coches de Mecánica como carga de trabajo estándar para comparar
 func Test_DuplicarPlantilla_Con3Mecanicos(t *testing.T) {
 	runTestSimulation(t, 7, Mecanica, configBase) // Usa la config de 3 (1-1-1)
 }
@@ -101,7 +95,6 @@ func Test_DuplicarPlantilla_Con6Mecanicos(t *testing.T) {
 }
 
 // --- CASO 3: Test de Comparativa PROPORCIONES ---
-//
 
 // Configuración Favorable: 3 mecánicos, 1 eléctrico, 1 carrocería
 var configProporcion_Favorable = map[Especialidad]int{

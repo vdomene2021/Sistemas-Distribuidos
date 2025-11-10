@@ -49,13 +49,6 @@ func (t *Taller) procesarTrabajos() {
 			mecanicoAsignado := t.buscarMecanicoDisponible(especialidadRequerida)
 
 			if mecanicoAsignado.ID == 0 {
-				// --- ESTA ES LA LÓGICA CORREGIDA ---
-				// No hay mecánicos libres. El coche debe esperar.
-				// Lo devolvemos al final de la cola.
-
-				// (Opcional: Imprimir un mensaje para ver que espera)
-				// fmt.Printf("Mecánico de %s ocupado. Coche %s vuelve a la cola.\n", especialidadRequerida, trabajo.Vehiculo.Matricula)
-
 				// Damos una pequeña pausa para no sobrecargar el loop
 				time.Sleep(50 * time.Millisecond)
 
@@ -147,7 +140,7 @@ func (t *Taller) atenderVehiculo(trabajo TrabajoPendiente, mecanico Mecanico) {
 
 	// Notificar al WaitGroup si existe
 	if t.wg != nil {
-		t.wg.Done() // <-- LÍNEA AÑADIDA
+		t.wg.Done()
 	}
 
 	tiempoTotal, _ := t.vehiculoManager.ObtenerTiempoAcumulado(vehiculo.ID)
@@ -187,7 +180,6 @@ func (t *Taller) buscarMecanicoDisponible(especialidad Especialidad) Mecanico {
 	return Mecanico{} // Retorna mecánico vacío si no encuentra
 }
 
-// buscarCualquierMecanicoDisponible busca cualquier mecánico disponible
 func (t *Taller) buscarCualquierMecanicoDisponible() Mecanico {
 	mecanicos := t.mecanicoManager.ListarMecanicos()
 

@@ -4,13 +4,11 @@ import (
 	"fmt"
 )
 
-// ClienteManager gestiona las operaciones sobre clientes
 type ClienteManager struct {
 	clientes []Cliente
 	nextID   int
 }
 
-// NewClienteManager crea un nuevo gestor de clientes
 func NewClienteManager() *ClienteManager {
 	return &ClienteManager{
 		clientes: make([]Cliente, 0),
@@ -18,7 +16,6 @@ func NewClienteManager() *ClienteManager {
 	}
 }
 
-// CrearCliente crea un nuevo cliente
 func (cm *ClienteManager) CrearCliente(nombre, telefono, email string) Cliente {
 	cliente := Cliente{
 		ID:       cm.nextID,
@@ -31,7 +28,6 @@ func (cm *ClienteManager) CrearCliente(nombre, telefono, email string) Cliente {
 	return cliente
 }
 
-// ObtenerCliente obtiene un cliente por su ID
 func (cm *ClienteManager) ObtenerCliente(id int) (Cliente, bool) {
 	for i := 0; i < len(cm.clientes); i++ {
 		if cm.clientes[i].ID == id {
@@ -41,7 +37,6 @@ func (cm *ClienteManager) ObtenerCliente(id int) (Cliente, bool) {
 	return Cliente{}, false
 }
 
-// ActualizarCliente actualiza los datos de un cliente
 func (cm *ClienteManager) ActualizarCliente(id int, nombre, telefono, email string) error {
 	for i := 0; i < len(cm.clientes); i++ {
 		if cm.clientes[i].ID == id {
@@ -60,7 +55,6 @@ func (cm *ClienteManager) ActualizarCliente(id int, nombre, telefono, email stri
 	return fmt.Errorf("cliente con ID %d no encontrado", id)
 }
 
-// EliminarCliente elimina un cliente
 func (cm *ClienteManager) EliminarCliente(id int) error {
 	for i := 0; i < len(cm.clientes); i++ {
 		if cm.clientes[i].ID == id {
@@ -71,12 +65,10 @@ func (cm *ClienteManager) EliminarCliente(id int) error {
 	return fmt.Errorf("cliente con ID %d no encontrado", id)
 }
 
-// ListarClientes lista todos los clientes
 func (cm *ClienteManager) ListarClientes() []Cliente {
 	return cm.clientes
 }
 
-// AsignarVehiculo asigna un vehículo a un cliente
 func (cm *ClienteManager) AsignarVehiculo(clienteID, vehiculoID int) error {
 	for i := 0; i < len(cm.clientes); i++ {
 		if cm.clientes[i].ID == clienteID {
