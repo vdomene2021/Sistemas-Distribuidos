@@ -8,5 +8,5 @@ En esta repositorio se pueden encontrar las distintas practicas de la asignatura
     - **src** --> Se encuentra el **código fuente** del sistema realizado en Go
    
   - **P2** --> Se corresponde con la práctica 2 en la cual hay qur introducir concurrencia en la práctica 1
-    - **doc** --> Se encuentra el **documento en *PDF*** con la información acerca del diagrama de secuencia y con la expliación sobre los resultados de los **test**
-    - **src** --> Se encuentran los **códigos fuentes** del sistema realizados en Go
+    - **doc** --> Se encuentra el **documento en *PDF*** con la información acerca del **diagrama de secuencia** y con la expliación sobre los resultados de los **test**
+    - **src** --> Se encuentran los **códigos fuentes** del sistema realizados en Go asi como el codigo de los **test** también en Go
