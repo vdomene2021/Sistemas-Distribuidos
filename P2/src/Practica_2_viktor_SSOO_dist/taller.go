@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"sync"
 	"time"
 )
 
@@ -14,6 +15,7 @@ type Taller struct {
 	vehiculoManager   *VehiculoManager
 	incidenciaManager *IncidenciaManager
 	terminar          chan bool
+	wg                *sync.WaitGroup
 }
 
 // NewTaller crea un nuevo taller
@@ -47,14 +49,18 @@ func (t *Taller) procesarTrabajos() {
 			mecanicoAsignado := t.buscarMecanicoDisponible(especialidadRequerida)
 
 			if mecanicoAsignado.ID == 0 {
-				// No hay mecánicos disponibles, contratar uno nuevo
-				fmt.Printf("No hay mecánicos disponibles de %s, contratando uno nuevo...\n", especialidadRequerida)
-				nuevoMecanico := t.mecanicoManager.CrearMecanico(
-					fmt.Sprintf("Mecanico-%d", t.mecanicoManager.nextID),
-					especialidadRequerida,
-					1,
-				)
-				mecanicoAsignado = nuevoMecanico
+				// --- ESTA ES LA LÓGICA CORREGIDA ---
+				// No hay mecánicos libres. El coche debe esperar.
+				// Lo devolvemos al final de la cola.
+
+				// (Opcional: Imprimir un mensaje para ver que espera)
+				// fmt.Printf("Mecánico de %s ocupado. Coche %s vuelve a la cola.\n", especialidadRequerida, trabajo.Vehiculo.Matricula)
+
+				// Damos una pequeña pausa para no sobrecargar el loop
+				time.Sleep(50 * time.Millisecond)
+
+				t.colaTrabajos <- trabajo // Devolver el trabajo a la cola
+				continue                  // Saltar al siguiente ciclo del 'select'
 			}
 
 			// Marcar el mecánico como ocupado
@@ -139,6 +145,11 @@ func (t *Taller) atenderVehiculo(trabajo TrabajoPendiente, mecanico Mecanico) {
 	// Liberar el mecánico
 	t.mecanicoManager.CambiarEstadoOcupado(mecanico.ID, false)
 
+	// Notificar al WaitGroup si existe
+	if t.wg != nil {
+		t.wg.Done() // <-- LÍNEA AÑADIDA
+	}
+
 	tiempoTotal, _ := t.vehiculoManager.ObtenerTiempoAcumulado(vehiculo.ID)
 	fmt.Printf("Vehículo %s (Matrícula: %s) reparado. Tiempo total: %.1f segundos\n",
 		vehiculo.Marca, vehiculo.Matricula, tiempoTotal)
@@ -150,6 +161,11 @@ func (t *Taller) AgregarTrabajo(vehiculo Vehiculo, incidencia Incidencia) {
 		Vehiculo:     &vehiculo,
 		Incidencia:   &incidencia,
 		TiempoInicio: time.Now(),
+	}
+
+	// Notificar al WaitGroup si existe
+	if t.wg != nil {
+		t.wg.Add(1)
 	}
 
 	fmt.Printf("Vehículo %s (Matrícula: %s) añadido a la cola - Incidencia: %s\n",

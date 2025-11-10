@@ -59,7 +59,7 @@ func main() {
 
 func mostrarMenuPrincipal() {
 	fmt.Println("\n╔════════════════════════════════════════╗")
-	fmt.Println("║     TALLER MECÁNICO - SISTEMA GO       ║")
+	fmt.Println("║            TALLER MECÁNICO             ║")
 	fmt.Println("╚════════════════════════════════════════╝")
 	fmt.Println("1. Gestión de Clientes")
 	fmt.Println("2. Gestión de Vehículos")
