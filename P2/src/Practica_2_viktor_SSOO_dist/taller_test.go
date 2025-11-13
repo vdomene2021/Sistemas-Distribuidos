@@ -65,13 +65,13 @@ var configBase = map[Especialidad]int{
 	EspecialidadCarroceria: 1,
 }
 
-// func Test_DuplicarCoches_3(t *testing.T) {
-// 	runTestSimulation(t, 3, Mecanica, configBase)
-// }
+func Test_DuplicarCoches_3(t *testing.T) {
+	runTestSimulation(t, 3, Mecanica, configBase)
+}
 
-// func Test_DuplicarCoches_6(t *testing.T) {
-// 	runTestSimulation(t, 6, Mecanica, configBase)
-// }
+func Test_DuplicarCoches_6(t *testing.T) {
+	runTestSimulation(t, 6, Mecanica, configBase)
+}
 
 // --- CASO 2: Test de Comparativa DUPLICANDO PLANTILLA ---
 
@@ -83,13 +83,13 @@ var configCaso2_6Mecanicos = map[Especialidad]int{
 }
 
 // Usamos 7 coches de Mecánica como carga de trabajo estándar para comparar
-// func Test_DuplicarPlantilla_Con3Mecanicos(t *testing.T) {
-// 	runTestSimulation(t, 7, Mecanica, configBase) // Usa la config de 3 (1-1-1)
-// }
+func Test_DuplicarPlantilla_Con3Mecanicos(t *testing.T) {
+	runTestSimulation(t, 7, Mecanica, configBase) // Usa la config de 3 (1-1-1)
+}
 
-// func Test_DuplicarPlantilla_Con6Mecanicos(t *testing.T) {
-// 	runTestSimulation(t, 7, Mecanica, configCaso2_6Mecanicos) // Usa la config de 6 (2-2-2)
-// }
+func Test_DuplicarPlantilla_Con6Mecanicos(t *testing.T) {
+	runTestSimulation(t, 7, Mecanica, configCaso2_6Mecanicos) // Usa la config de 6 (2-2-2)
+}
 
 // --- CASO 3: Test de Comparativa PROPORCIONES ---
 
@@ -108,9 +108,9 @@ var configProporcion_Desfavorable = map[Especialidad]int{
 }
 
 // Usamos 10 coches de Mecánica para ver la diferencia
-// func Test_Proporcion_Favorable(t *testing.T) {
-// 	runTestSimulation(t, 10, Mecanica, configProporcion_Favorable)
-// }
+func Test_Proporcion_Favorable(t *testing.T) {
+	runTestSimulation(t, 10, Mecanica, configProporcion_Favorable)
+}
 
 func Test_Proporcion_Desfavorable(t *testing.T) {
 	runTestSimulation(t, 10, Mecanica, configProporcion_Desfavorable)
