@@ -5,11 +5,10 @@ import (
 )
 
 type Cliente struct {
-	ID         int
-	Nombre     string
-	Telefono   string
-	Email      string
-	VehiculoID int
+	ID       int
+	Nombre   string
+	Telefono string
+	Email    string
 }
 
 type Vehiculo struct {
@@ -19,9 +18,8 @@ type Vehiculo struct {
 	Modelo          string
 	FechaEntrada    time.Time
 	FechaSalida     time.Time
-	IncidenciaID    int
 	ClienteID       int
-	TiempoAcumulado float64 // Tiempo total de atención en segundos
+	TiempoAcumulado float64
 }
 
 type TipoIncidencia string
@@ -51,6 +49,7 @@ const (
 type Incidencia struct {
 	ID           int
 	MecanicosIDs []int
+	VehiculoID   int
 	Tipo         TipoIncidencia
 	Prioridad    Prioridad
 	Descripcion  string
@@ -66,12 +65,13 @@ const (
 )
 
 type Mecanico struct {
-	ID           int
-	Nombre       string
-	Especialidad Especialidad
-	Experiencia  int
-	Activo       bool
-	Ocupado      bool // Indica si está atendiendo un vehículo
+	ID             int
+	Nombre         string
+	Especialidad   Especialidad
+	Experiencia    int
+	Activo         bool
+	PlazasOcupadas int
+	ColaPersonal   chan TrabajoPendiente
 }
 
 type TrabajoPendiente struct {

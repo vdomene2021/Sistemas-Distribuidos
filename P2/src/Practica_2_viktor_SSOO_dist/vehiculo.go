@@ -17,7 +17,11 @@ func NewVehiculoManager() *VehiculoManager {
 	}
 }
 
-func (vm *VehiculoManager) CrearVehiculo(matricula, marca, modelo string, clienteID int) Vehiculo {
+func (vm *VehiculoManager) CrearVehiculo(matricula, marca, modelo string, clienteID int, cm *ClienteManager) (Vehiculo, error) {
+	if _, existe := cm.ObtenerCliente(clienteID); !existe {
+		return Vehiculo{}, fmt.Errorf("cliente con ID %d no encontrado. No se puede crear el vehículo", clienteID)
+	}
+
 	vehiculo := Vehiculo{
 		ID:              vm.nextID,
 		Matricula:       matricula,
@@ -29,7 +33,7 @@ func (vm *VehiculoManager) CrearVehiculo(matricula, marca, modelo string, client
 	}
 	vm.vehiculos = append(vm.vehiculos, vehiculo)
 	vm.nextID++
-	return vehiculo
+	return vehiculo, nil
 }
 
 func (vm *VehiculoManager) ObtenerVehiculo(id int) (Vehiculo, bool) {
@@ -71,16 +75,6 @@ func (vm *VehiculoManager) EliminarVehiculo(id int) error {
 
 func (vm *VehiculoManager) ListarVehiculos() []Vehiculo {
 	return vm.vehiculos
-}
-
-func (vm *VehiculoManager) AsignarIncidencia(vehiculoID, incidenciaID int) error {
-	for i := 0; i < len(vm.vehiculos); i++ {
-		if vm.vehiculos[i].ID == vehiculoID {
-			vm.vehiculos[i].IncidenciaID = incidenciaID
-			return nil
-		}
-	}
-	return fmt.Errorf("vehículo con ID %d no encontrado", vehiculoID)
 }
 
 func (vm *VehiculoManager) ActualizarTiempoAcumulado(vehiculoID int, tiempo float64) error {

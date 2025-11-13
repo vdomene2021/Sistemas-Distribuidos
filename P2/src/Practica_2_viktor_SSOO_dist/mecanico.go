@@ -18,19 +18,19 @@ func NewMecanicoManager() *MecanicoManager {
 
 func (mm *MecanicoManager) CrearMecanico(nombre string, especialidad Especialidad, experiencia int) Mecanico {
 	mecanico := Mecanico{
-		ID:           mm.nextID,
-		Nombre:       nombre,
-		Especialidad: especialidad,
-		Experiencia:  experiencia,
-		Activo:       true,
-		Ocupado:      false,
+		ID:             mm.nextID,
+		Nombre:         nombre,
+		Especialidad:   especialidad,
+		Experiencia:    experiencia,
+		Activo:         true,
+		PlazasOcupadas: 0,
+		ColaPersonal:   make(chan TrabajoPendiente, 2),
 	}
 	mm.mecanicos = append(mm.mecanicos, mecanico)
 	mm.nextID++
 	return mecanico
 }
 
-// ObtenerMecanico obtiene un mecánico por su ID
 func (mm *MecanicoManager) ObtenerMecanico(id int) (Mecanico, bool) {
 	for i := 0; i < len(mm.mecanicos); i++ {
 		if mm.mecanicos[i].ID == id {
@@ -72,7 +72,6 @@ func (mm *MecanicoManager) ListarMecanicos() []Mecanico {
 	return mm.mecanicos
 }
 
-// CambiarEstadoActivo cambia el estado activo de un mecánico
 func (mm *MecanicoManager) CambiarEstadoActivo(id int, activo bool) error {
 	for i := 0; i < len(mm.mecanicos); i++ {
 		if mm.mecanicos[i].ID == id {
@@ -83,10 +82,22 @@ func (mm *MecanicoManager) CambiarEstadoActivo(id int, activo bool) error {
 	return fmt.Errorf("mecánico con ID %d no encontrado", id)
 }
 
-func (mm *MecanicoManager) CambiarEstadoOcupado(id int, ocupado bool) error {
+func (mm *MecanicoManager) IncrementarPlaza(id int) error {
 	for i := 0; i < len(mm.mecanicos); i++ {
 		if mm.mecanicos[i].ID == id {
-			mm.mecanicos[i].Ocupado = ocupado
+			mm.mecanicos[i].PlazasOcupadas++
+			return nil
+		}
+	}
+	return fmt.Errorf("mecánico con ID %d no encontrado", id)
+}
+
+func (mm *MecanicoManager) DecrementarPlaza(id int) error {
+	for i := 0; i < len(mm.mecanicos); i++ {
+		if mm.mecanicos[i].ID == id {
+			if mm.mecanicos[i].PlazasOcupadas > 0 {
+				mm.mecanicos[i].PlazasOcupadas--
+			}
 			return nil
 		}
 	}
@@ -96,7 +107,7 @@ func (mm *MecanicoManager) CambiarEstadoOcupado(id int, ocupado bool) error {
 func (mm *MecanicoManager) ListarMecanicosDisponibles() []Mecanico {
 	lista := make([]Mecanico, 0)
 	for i := 0; i < len(mm.mecanicos); i++ {
-		if mm.mecanicos[i].Activo && !mm.mecanicos[i].Ocupado {
+		if mm.mecanicos[i].Activo && mm.mecanicos[i].PlazasOcupadas < 2 {
 			lista = append(lista, mm.mecanicos[i])
 		}
 	}
@@ -124,6 +135,15 @@ func (mm *MecanicoManager) ContarMecanicosPorEspecialidad() map[Especialidad]int
 			conteo[mm.mecanicos[i].Especialidad]++
 		}
 	}
-
 	return conteo
+}
+
+func (mm *MecanicoManager) ContarMecanicosActivos() int {
+	count := 0
+	for i := 0; i < len(mm.mecanicos); i++ {
+		if mm.mecanicos[i].Activo {
+			count++
+		}
+	}
+	return count
 }

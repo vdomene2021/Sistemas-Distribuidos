@@ -17,10 +17,11 @@ func NewIncidenciaManager() *IncidenciaManager {
 	}
 }
 
-func (im *IncidenciaManager) CrearIncidencia(tipo TipoIncidencia, prioridad Prioridad, descripcion string) Incidencia {
+func (im *IncidenciaManager) CrearIncidencia(tipo TipoIncidencia, prioridad Prioridad, descripcion string, vehiculoID int) Incidencia {
 	incidencia := Incidencia{
 		ID:           im.nextID,
 		MecanicosIDs: make([]int, 0),
+		VehiculoID:   vehiculoID,
 		Tipo:         tipo,
 		Prioridad:    prioridad,
 		Descripcion:  descripcion,
@@ -131,4 +132,35 @@ func ObtenerTiempoAtencion(tipo TipoIncidencia) time.Duration {
 		return 11 * time.Second
 	}
 	return 5 * time.Second
+}
+
+func (im *IncidenciaManager) ContarTodasIncidencias() map[int]int {
+	counts := make(map[int]int)
+	for _, incidencia := range im.incidencias {
+		if incidencia.VehiculoID > 0 {
+			counts[incidencia.VehiculoID]++
+		}
+	}
+	return counts
+}
+
+func (im *IncidenciaManager) ObtenerIncidenciasPorVehiculo(vehiculoID int) []Incidencia {
+	lista := make([]Incidencia, 0)
+
+	for i := 0; i < len(im.incidencias); i++ {
+		if im.incidencias[i].VehiculoID == vehiculoID && im.incidencias[i].Estado == Abierta {
+			lista = append(lista, im.incidencias[i])
+		}
+	}
+	return lista
+}
+
+func (im *IncidenciaManager) EliminarIncidenciasPorVehiculo(vehiculoID int) {
+	nuevaLista := make([]Incidencia, 0)
+	for i := 0; i < len(im.incidencias); i++ {
+		if im.incidencias[i].VehiculoID != vehiculoID {
+			nuevaLista = append(nuevaLista, im.incidencias[i])
+		}
+	}
+	im.incidencias = nuevaLista
 }

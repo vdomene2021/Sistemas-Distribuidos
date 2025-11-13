@@ -68,13 +68,3 @@ func (cm *ClienteManager) EliminarCliente(id int) error {
 func (cm *ClienteManager) ListarClientes() []Cliente {
 	return cm.clientes
 }
-
-func (cm *ClienteManager) AsignarVehiculo(clienteID, vehiculoID int) error {
-	for i := 0; i < len(cm.clientes); i++ {
-		if cm.clientes[i].ID == clienteID {
-			cm.clientes[i].VehiculoID = vehiculoID
-			return nil
-		}
-	}
-	return fmt.Errorf("cliente con ID %d no encontrado", clienteID)
-}

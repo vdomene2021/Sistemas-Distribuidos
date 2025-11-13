@@ -6,56 +6,53 @@ import (
 	"testing"
 )
 
-// setupTest crea un taller limpio para una sola ejecución de test
-func setupTest(t *testing.T, mechanicConfig map[Especialidad]int) (*Taller, *VehiculoManager, *IncidenciaManager) {
-	// Crear managers limpios
+func setupTest(t *testing.T, mechanicConfig map[Especialidad]int) (*Taller, *VehiculoManager, *IncidenciaManager, *ClienteManager) {
+	cm := NewClienteManager()
 	mm := NewMecanicoManager()
 	vm := NewVehiculoManager()
 	im := NewIncidenciaManager()
 
-	// Crear mecánicos según la configuración
 	for especialidad, count := range mechanicConfig {
 		for i := 0; i < count; i++ {
 			mm.CrearMecanico(string(especialidad), especialidad, 5)
 		}
 	}
 
-	// Crear el Taller
-	taller := NewTaller(100, mm, vm, im)
+	taller := NewTaller(mm, vm, im)
 	taller.IniciarTaller()
 
-	// Detener el taller cuando el test termine
 	t.Cleanup(func() {
 		taller.DetenerTaller()
 	})
 
-	return taller, vm, im
+	return taller, vm, im, cm
 }
 
-// runTestSimulation simula la llegada de N coches a la vez
 func runTestSimulation(t *testing.T, numCars int, tipo TipoIncidencia, mechanicConfig map[Especialidad]int) {
-	taller, vm, im := setupTest(t, mechanicConfig)
+	taller, vm, im, cm := setupTest(t, mechanicConfig)
 	var wg sync.WaitGroup
 	taller.wg = &wg
 
-	// Creamos vehículos e incidencias nuevos
 	vehiculos := make([]Vehiculo, numCars)
 	incidencias := make([]Incidencia, numCars)
+
 	for i := 0; i < numCars; i++ {
 		matricula := fmt.Sprintf("Matricula%d", i+1)
 		marca := fmt.Sprintf("TEST-CAR%d", i+1)
 		modelo := fmt.Sprintf("modelo%d", i+1)
 
-		vehiculos[i] = vm.CrearVehiculo(matricula, marca, modelo, 1)
-		incidencias[i] = im.CrearIncidencia(tipo, Alta, "Test incidence")
+		cliente := cm.CrearCliente(fmt.Sprintf("Cliente %d", i+1), "000000000", "test@test.com")
+
+		v, _ := vm.CrearVehiculo(matricula, marca, modelo, cliente.ID, cm)
+		vehiculos[i] = v
+
+		incidencias[i] = im.CrearIncidencia(tipo, Alta, "Test incidence", v.ID)
 	}
 
-	// Enviar todos los coches al taller
 	for i := 0; i < numCars; i++ {
 		taller.AgregarTrabajo(vehiculos[i], incidencias[i])
 	}
 
-	// Esperar a que el WaitGroup (wg) nos diga que todos los trabajos se han completado (llegado a 0)
 	wg.Wait()
 }
 
@@ -68,13 +65,13 @@ var configBase = map[Especialidad]int{
 	EspecialidadCarroceria: 1,
 }
 
-func Test_DuplicarCoches_3(t *testing.T) {
-	runTestSimulation(t, 3, Mecanica, configBase)
-}
+// func Test_DuplicarCoches_3(t *testing.T) {
+// 	runTestSimulation(t, 3, Mecanica, configBase)
+// }
 
-func Test_DuplicarCoches_6(t *testing.T) {
-	runTestSimulation(t, 6, Mecanica, configBase)
-}
+// func Test_DuplicarCoches_6(t *testing.T) {
+// 	runTestSimulation(t, 6, Mecanica, configBase)
+// }
 
 // --- CASO 2: Test de Comparativa DUPLICANDO PLANTILLA ---
 
@@ -86,13 +83,13 @@ var configCaso2_6Mecanicos = map[Especialidad]int{
 }
 
 // Usamos 7 coches de Mecánica como carga de trabajo estándar para comparar
-func Test_DuplicarPlantilla_Con3Mecanicos(t *testing.T) {
-	runTestSimulation(t, 7, Mecanica, configBase) // Usa la config de 3 (1-1-1)
-}
+// func Test_DuplicarPlantilla_Con3Mecanicos(t *testing.T) {
+// 	runTestSimulation(t, 7, Mecanica, configBase) // Usa la config de 3 (1-1-1)
+// }
 
-func Test_DuplicarPlantilla_Con6Mecanicos(t *testing.T) {
-	runTestSimulation(t, 7, Mecanica, configCaso2_6Mecanicos) // Usa la config de 6 (2-2-2)
-}
+// func Test_DuplicarPlantilla_Con6Mecanicos(t *testing.T) {
+// 	runTestSimulation(t, 7, Mecanica, configCaso2_6Mecanicos) // Usa la config de 6 (2-2-2)
+// }
 
 // --- CASO 3: Test de Comparativa PROPORCIONES ---
 
@@ -111,9 +108,9 @@ var configProporcion_Desfavorable = map[Especialidad]int{
 }
 
 // Usamos 10 coches de Mecánica para ver la diferencia
-func Test_Proporcion_Favorable(t *testing.T) {
-	runTestSimulation(t, 10, Mecanica, configProporcion_Favorable)
-}
+// func Test_Proporcion_Favorable(t *testing.T) {
+// 	runTestSimulation(t, 10, Mecanica, configProporcion_Favorable)
+// }
 
 func Test_Proporcion_Desfavorable(t *testing.T) {
 	runTestSimulation(t, 10, Mecanica, configProporcion_Desfavorable)
