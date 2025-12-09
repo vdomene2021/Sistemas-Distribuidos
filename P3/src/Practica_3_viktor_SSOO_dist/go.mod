@@ -1,3 +1,3 @@
-module P2
+module P3
 
 go 1.22.2

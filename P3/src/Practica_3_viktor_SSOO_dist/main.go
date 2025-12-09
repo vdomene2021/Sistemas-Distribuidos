@@ -7,10 +7,6 @@ import (
 	"time"
 )
 
-// ============================================================================
-// MANAGERS - IMPLEMENTACIÓN DE MÉTODOS
-// ============================================================================
-
 func (cm *ClienteManager) CrearCliente(nombre, telefono, email string) *Cliente {
 	cm.mutex.Lock()
 	defer cm.mutex.Unlock()
@@ -308,10 +304,6 @@ func (mm *MecanicoManager) CambiarEstadoActivo(id int, activo bool) error {
 	return nil
 }
 
-// ============================================================================
-// TALLER (SISTEMA DE GESTIÓN)
-// ============================================================================
-
 func (t *Taller) AgregarTrabajo(vehiculo *VehiculoCompleto, incidencia *IncidenciaCompleta) {
 	t.mutex.Lock()
 	defer t.mutex.Unlock()
@@ -321,7 +313,7 @@ func (t *Taller) AgregarTrabajo(vehiculo *VehiculoCompleto, incidencia *Incidenc
 		Incidencia: *incidencia,
 	}
 	t.ColaTrabajo = append(t.ColaTrabajo, trabajo)
-	fmt.Printf("✓ Trabajo agregado: Vehículo %s - Incidencia %s\n", vehiculo.Matricula, incidencia.Tipo)
+	fmt.Printf("Trabajo agregado: Vehículo %s - Incidencia %s\n", vehiculo.Matricula, incidencia.Tipo)
 
 	// Intentar asignar inmediatamente
 	go t.AsignarTrabajosAutomaticamente()
@@ -366,7 +358,7 @@ func (t *Taller) AsignarTrabajosAutomaticamente() {
 			mec.mutex.Lock()
 			if len(mec.ColaPersonal) < 2 {
 				mec.ColaPersonal = append(mec.ColaPersonal, trabajo)
-				fmt.Printf("→ Asignado a %s (especialidad: %s)\n", mec.Nombre, mec.Especialidad)
+				fmt.Printf("Asignado a %s (especialidad: %s)\n", mec.Nombre, mec.Especialidad)
 
 				// Enviar por canal
 				select {
@@ -392,7 +384,7 @@ func (t *Taller) AsignarTrabajosAutomaticamente() {
 }
 
 func (t *Taller) ArrancarRutinaMecanico(m *Mecanico) {
-	fmt.Printf("🔧 Mecánico %s iniciado y listo para trabajar\n", m.Nombre)
+	fmt.Printf("Mecánico %s iniciado y listo para trabajar\n", m.Nombre)
 
 	for {
 		if !m.Activo {
@@ -402,7 +394,7 @@ func (t *Taller) ArrancarRutinaMecanico(m *Mecanico) {
 
 		select {
 		case trabajo := <-m.Canal:
-			fmt.Printf("🔨 %s comienza a trabajar en %s (%s)\n",
+			fmt.Printf("%s comienza a trabajar en %s (%s)\n",
 				m.Nombre, trabajo.Vehiculo.Matricula, trabajo.Incidencia.Tipo)
 
 			// Simular trabajo (3-8 segundos según experiencia)
@@ -428,7 +420,7 @@ func (t *Taller) ArrancarRutinaMecanico(m *Mecanico) {
 			}
 			m.mutex.Unlock()
 
-			fmt.Printf("✅ %s terminó trabajo en %s\n", m.Nombre, trabajo.Vehiculo.Matricula)
+			fmt.Printf("%s terminó trabajo en %s\n", m.Nombre, trabajo.Vehiculo.Matricula)
 
 			// Intentar asignar más trabajos
 			go t.AsignarTrabajosAutomaticamente()
@@ -448,7 +440,7 @@ func (t *Taller) ObtenerEstadoTaller() {
 	fmt.Println("║           ESTADO ACTUAL DEL TALLER                 ║")
 	fmt.Println("╚════════════════════════════════════════════════════╝")
 
-	fmt.Printf("\n📋 Trabajos en cola principal: %d\n", len(t.ColaTrabajo))
+	fmt.Printf("\nTrabajos en cola principal: %d\n", len(t.ColaTrabajo))
 	if len(t.ColaTrabajo) > 0 {
 		for i, trabajo := range t.ColaTrabajo {
 			fmt.Printf("  %d. Vehículo: %s | Incidencia: %s | Prioridad: %d\n",
@@ -456,12 +448,12 @@ func (t *Taller) ObtenerEstadoTaller() {
 		}
 	}
 
-	fmt.Println("\n👷 Estado de mecánicos:")
+	fmt.Println("\nEstado de mecánicos:")
 	mecanicos := t.MecanicoManager.ListarMecanicos()
 	for _, mec := range mecanicos {
-		estado := "🟢 Activo"
+		estado := "Activo"
 		if !mec.Activo {
-			estado = "🔴 Inactivo"
+			estado = "Inactivo"
 		}
 		fmt.Printf("  • %s (%s) - %s - Cola: %d/2\n",
 			mec.Nombre, mec.Especialidad, estado, len(mec.ColaPersonal))
@@ -476,10 +468,6 @@ func (t *Taller) ObtenerEstadoTaller() {
 	fmt.Println("\n════════════════════════════════════════════════════════")
 }
 
-// ============================================================================
-// MAIN - PUNTO DE ENTRADA DEL PROGRAMA
-// ============================================================================
-
 func main() {
 	scanner := bufio.NewScanner(os.Stdin)
 
@@ -491,8 +479,7 @@ func main() {
 	taller := NewTaller(mecanicoManager, vehiculoManager, incidenciaManager)
 
 	fmt.Println("╔═══════════════════════════════════════════════════╗")
-	fmt.Println("║     SISTEMA DE GESTIÓN DE TALLER MECÁNICO        ║")
-	fmt.Println("║            Versión Interactiva                    ║")
+	fmt.Println("║     SISTEMA DE GESTIÓN DE TALLER MECÁNICO         ║")
 	fmt.Println("╚═══════════════════════════════════════════════════╝")
 
 	for {
@@ -513,10 +500,10 @@ func main() {
 		case "5":
 			menuTaller(scanner, taller, vehiculoManager, incidenciaManager)
 		case "0":
-			fmt.Println("\n👋 Gracias por usar el sistema. ¡Hasta luego!")
+			fmt.Println("\nGracias por usar el sistema. ¡Hasta luego!")
 			return
 		default:
-			fmt.Println("❌ Opción no válida. Intente de nuevo.")
+			fmt.Println("Opción no válida. Intente de nuevo.")
 		}
 	}
 }
