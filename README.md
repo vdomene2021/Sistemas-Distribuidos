@@ -7,6 +7,14 @@ En esta repositorio se pueden encontrar las distintas practicas de la asignatura
       - **diagramas** --> Se encuentran los JPG de los diagramas realizados en draw.io por si se quieren ver con más detalle
     - **src** --> Se encuentra el **código fuente** del sistema realizado en Go
    
-  - **P2** --> Se corresponde con la práctica 2 en la cual hay qur introducir concurrencia en la práctica 1
+  - **P2** --> Se corresponde con la práctica 2 en la cual hay que introducir varias tareas a la vez en nuestro taller
     - **doc** --> Se encuentra el **documento en *PDF*** con la información acerca del **diagrama de secuencia** y con la expliación sobre los resultados de los **test**
+      - **Diagrama** --> Se encuentra el PNG del diagrama de secuencia realizado por si se quiere ver con más detalle
+      - **test** --> Se encuentran las capturas de los diferentes test realizados por si estas se quieren ver con mas detalle
+    - **src** --> Se encuentran los **códigos fuentes** del sistema realizados en Go asi como el codigo de los **test** también en Go
+   
+  - **P3** --> Se corresponde con la práctica 3 en la cual hay qur introducir concurrencia en nuestro taller
+    - **doc** --> Se encuentra el **documento en *PDF*** con la información acerca de los diagramas; **Diagrama de Clases** y **Diagrama de Secuencia** con la expliación sobre los resultados de los **test**
+        - **Diagramas** --> Se encuentran los PNGs de los dos diagramas realizados para esta práctica por si estos se quiere ver con más detalle
+        - **test** --> Se encuentra una carpeta destinada a cada test donde vemos el inicio de cada test y el resultado final de los mismos
     - **src** --> Se encuentran los **códigos fuentes** del sistema realizados en Go asi como el codigo de los **test** también en Go
