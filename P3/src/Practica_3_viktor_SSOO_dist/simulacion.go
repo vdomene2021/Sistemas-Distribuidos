@@ -37,31 +37,13 @@ func (cp *ColaPrioridad) Pop() interface{} {
 	return item
 }
 
-// Taller representa el taller con sus recursos
-type Taller struct {
-	NumPlazas    int
-	NumMecanicos int
-	PlazasSem    chan struct{}
-	MecanicosSem chan struct{}
-}
-
-// NewTaller crea un nuevo taller
-func NewTaller(numPlazas, numMecanicos int) *Taller {
-	return &Taller{
-		NumPlazas:    numPlazas,
-		NumMecanicos: numMecanicos,
-		PlazasSem:    make(chan struct{}, numPlazas),
-		MecanicosSem: make(chan struct{}, numMecanicos),
-	}
-}
-
 // ============================================
 // IMPLEMENTACIÓN CON RWMUTEX
 // ============================================
 
 // SimularTallerRWMutex simula el taller usando RWMutex
 func SimularTallerRWMutex(vehiculos []*Vehiculo, numPlazas, numMecanicos int) {
-	taller := NewTaller(numPlazas, numMecanicos)
+	taller := NewTallerSimulacion(numPlazas, numMecanicos)
 	tiempoInicio := time.Now()
 
 	var rwMutex sync.RWMutex
@@ -240,7 +222,7 @@ func SimularTallerRWMutex(vehiculos []*Vehiculo, numPlazas, numMecanicos int) {
 
 // SimularTallerWaitGroup simula el taller usando WaitGroup
 func SimularTallerWaitGroup(vehiculos []*Vehiculo, numPlazas, numMecanicos int) {
-	taller := NewTaller(numPlazas, numMecanicos)
+	taller := NewTallerSimulacion(numPlazas, numMecanicos)
 	tiempoInicio := time.Now()
 
 	var mutex sync.Mutex
